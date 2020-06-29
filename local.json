@@ -1,0 +1,14 @@
+{
+	"net_addr":"ssdsds",
+	"api_config" :{
+		"port":9998,
+		"session_key":"",
+		"ws_path" : "/ws",
+		"session_live" : 0
+	},
+	"database" : {
+		"path" : "/home/sergey/lager/database.db",
+		"driver": "sqlite3",
+		"debug" : true
+	}
+}

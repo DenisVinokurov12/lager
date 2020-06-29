@@ -1,0 +1,39 @@
+user
+id | login | password | rule | add_ts | rank_id | first_name | last_name | phone
+
+course
+id | title | description | image
+
+course_day
+id | day | course_id |
+
+
+заголовок, описание, видео, картинка
+issue_day
+id | day_id | title | description | video | image | full_description
+
+
+user_course
+id | user_id | issue_day_id | is_completed | start_ts
+
+user_course_archive
+id | user_id | issue_day_id | is_completed | start_ts | done_ts
+
+
+user_comment 
+id | user_id | issue_day_id | user_comment_id| comment | video | image | file
+
+
+user_course_answer
+id | user_id | type_value | issue_day_id | value
+
+
+rank
+id | title | weight
+
+user_log
+id | user_id | action | object | object_id | add_ts
+
+
+
+curl -XPOST -H "Content-type: application/json" -d '{"username":"admin","password":"admin"}' 'https://skills.future-mission.ru/api/auth'
