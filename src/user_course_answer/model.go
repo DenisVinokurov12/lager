@@ -13,7 +13,8 @@ var UserLogCallbackEdit = func(string , int, int){}
 type UserCourseAnswer struct {
 	Id             	int    		`gorm:"primary_key" json:"id"`
 	UserId 			int    		`json:"day_id"`
-	TypeValue 		string    		`json:"type_value"`
-	IssueDayId 	int    	`json:"issue_day_id"`
-	Value 		string   `json:"value"`
+	IssueDayId 		int    		`json:"issue_day_id"`
+	Answer 			string    	`gorm:"type:text" json:"answer"`
+	File 			string    	`json:"file"`
+	IsReview 		bool    	`json:"is_review"`
 }

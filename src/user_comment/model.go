@@ -16,8 +16,9 @@ type UserComment struct {
 	UserId 			int    `json:"user_id"`
 	IssueDayId 		int    `json:"issue_day_id"`
 	UserCommentId 	int    `json:"user_comment_id"`
+	StartCommentId 	int    `json:"start_comment_id"`
 	Comment 		string    `gorm:"type:text" json:"comment"`
-	Video 			string    `json:"video"`
-	Image 			string    `json:"image"`
 	File 			string    `json:"file"`
+	Nagrada 		string    `json:"nagrada"`
+	NagradaUserId 	int    `json:"nagrada_user_id"`
 }

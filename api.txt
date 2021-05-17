@@ -232,3 +232,71 @@ GET /api/admin/user_course/([0-9]*)/completed
 Редактиварование курсами пользователя
 POST /api/admin/user_course/([0-9]*)
 PUT /api/admin/user_course/([0-9]*)
+
+
+
+
+
+// Получение заданий по пользователю со статусом
+// Получение заданий на определенном дне у курса
+GET /api/issues/course/([0-9]*)/day/([0-9]*)/my
+
+
+
+// Получение заданий на курсе
+GET /api/issues/course/([0-9]*)/my
+
+GET /api/issues/course/([0-9]*)/day/([0-9]*)/user/([0-9]*)
+
+GET /api/issues/course/([0-9]*)/user/([0-9]*)
+
+// Ответ пользователя на вопрпос
+// Получение комментариев по задаче
+GET /api/issues/([0-9]*)/answer
+GET /api/issues/([0-9]*)/answer/no_review
+
+// Получение комментариев от какого то пользователя
+GET /api/issues/([0-9]*)/user/([0-9]*)/answer
+// answer_file
+// answer
+// 
+
+id - задача
+answer - id ответа
+
+form data
+answer_file : file
+answer : text
+
+POST /api/issues/([0-9]*)/answer
+PUT `/api/issues/([0-9]*)/answer/([0-9]*)
+
+
+
+
+
+
+// Получение всех комментариев по этой задаче
+GET /api/issues/([0-9]*)/comments
+
+// Получение всех комментариев по этой задаче по определенному пользователю
+GET /api/issues/([0-9]*)/user/([0-9]*)/comments
+
+// Добавить комментарий
+
+comment_id : int
+comment : text
+video : text
+image : text
+comment_file : file
+
+id - id задания
+comment - id ответа
+
+POST /api/issues/([0-9]*)/comment
+
+// Ответить на комментарий
+PUT `/api/issues/([0-9]*)/comment/([0-9]*)
+
+// Удалить комментарий
+DELETE /api/issues/([0-9]*)/comment/([0-9]*)

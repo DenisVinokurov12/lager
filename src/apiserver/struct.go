@@ -8,10 +8,11 @@ type (
 		SessionKey  string `json:"sesion_key"`
 		SessionLive int    `json:"sesion_live"`
 		RegistrationHost     string         `json:"registration_host"`
+		FilesFolder     string         `json:"files_folder"`
 	}
 	UserCourse struct{
 		UserId 			int    		`json:"day_id"`
-		CourseId 		int    		`json:"course_id"`
+		IssueDayId 		int    		`json:"issue_day_id"`
 	}
 	LoginPost struct {
 		Username string `json:"username"`
@@ -57,5 +58,7 @@ type (
 		Password string `json:"password"`
 		CourseId  int `json:"course_id"`
 		OrderId  string `json:"order_id"`
+		Rule  int `json:"rule"`
+		Gender  string `json:"gender"`
 	}
 )

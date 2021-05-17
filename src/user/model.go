@@ -9,6 +9,7 @@ import (
 	"encoding/hex"
 	"issue_day"
 	"user_course"
+	"user_comment"
 )
 
 var DB *gorm.DB
@@ -37,6 +38,7 @@ type User struct {
 	Email       	string `json:"email"`
 	Avatar       	string `json:"avatar"`
 	OrderId       	string `json:"order_id"`
+	Gender       	string `json:"gender"`
 }
 
 
@@ -51,8 +53,33 @@ func (u User) IsAccessCourse(course_ *course.Course) bool {
 	return true
 }
 
+func (u User) IsAccessUpdateRankUser(user_ *User) bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	return true
+}
+
+
+func (u User) IsAccessViewCourseUser(user_ *User) bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	if user_.Id == u.Id {
+		return true
+	}
+	return true
+}
+
 func (u User) IsAccessAddCourse() bool {
 	if u.Rule == ADMIN{
+		return true
+	}
+	return false
+}
+
+func (u User) IsAccessNagarda() bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR{
 		return true
 	}
 	return false
@@ -72,11 +99,15 @@ func (u User) IsAccessDeleteCourse(course_ *course.Course) bool {
 	return false
 }
 
+
 func (u User) IsAccessCourseDay(course_day_ *course_day.CourseDay) bool {
 	if u.Rule == ADMIN{
 		return true
 	}
-	return false
+	// if course_day_.UserId == u.Id {
+	// 	return true
+	// }
+	return true
 }
 
 func (u User) IsAccessAddIssueDay() bool {
@@ -113,8 +144,45 @@ func (u User) IsAccessUpdateUserCourse(user_course_ *user_course.UserCourse) boo
 	return false
 }
 
+func (u User) IsAccessUpdateUser(user_ *User) bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	if u.Id == user_.Id {
+		return true
+	}
+	return false
+}
+
 func (u User) IsAccessViewUser(user_ *User) bool {
 	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	return false
+}
+
+func (u User) IsAccessDeleteUserComment(user_comment_ *user_comment.UserComment) bool {
+	if user_comment_.UserId == u.Id {
+		return true
+	}
+	return false
+}
+
+func (u User) IsAccessViewUserCourse(user_course_ *user_course.UserCourse) bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	if user_course_.UserId == u.Id {
+		return true
+	}
+	return false
+}
+
+func (u User) IsAccessViewUserCommentByUserId(user_ *User) bool {
+	if u.Rule == ADMIN || u.Rule == CURATOR {
+		return true
+	}
+	if u.Id == user_.Id {
 		return true
 	}
 	return false

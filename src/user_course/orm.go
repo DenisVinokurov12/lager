@@ -12,6 +12,7 @@ func GetById(id int) *UserCourse {
 	return record
 }
 
+
 func GetByIdByUserId(issue_day_id, user_id int) *UserCourse {
 	record := &UserCourse{}
 	DB.Where("issue_day_id = ?", issue_day_id).
@@ -20,6 +21,13 @@ func GetByIdByUserId(issue_day_id, user_id int) *UserCourse {
 	return record
 }
 
+func GetByUserIdNotCompleted(user_id int) *UserCourse {
+	record := &UserCourse{}
+	DB.Where("is_completed = ?", false).
+		Where("user_id = ?", user_id).
+		First(&record)
+	return record
+}
 
 func Delete(id int, ctx context.Context) *UserCourse {
 	DB.Where("id = ?", id).Delete(UserCourse{})

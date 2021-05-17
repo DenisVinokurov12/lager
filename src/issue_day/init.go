@@ -17,8 +17,10 @@ func Init(db *gorm.DB) {
 }
 
 const DIR_PREVIEW = "./public/issue_day/preview"
+const DIR_FILE = "./public/issue_day/file"
 
 func SetEnv() {
 	logrus.Info("Задания на день курса")
 	os.MkdirAll(DIR_PREVIEW, os.ModePerm)
+	os.MkdirAll(DIR_FILE, os.ModePerm)
 }

@@ -1,12 +1,12 @@
 package apiserver
 
 import (
-	"encoding/json"
 	"github.com/hoisie/web"
-	"io/ioutil"
 	"path/filepath"
 	"os"
+	"io"
 	"course"
+	"github.com/google/uuid"
 	"context"
 	"strconv"
 	"fmt"
@@ -63,7 +63,7 @@ func handler_admin_post_course(ctx *web.Context, id string) string {
 	course_ := course.GetById(id_int)
 
 	if id_int == 0 {
-		if init_user.IsAccessAddCourse(){
+		if !init_user.IsAccessAddCourse(){
 			ctx.ResponseWriter.WriteHeader(403)
 			return `{"error" : "forbidden"}`
 		}
@@ -76,38 +76,35 @@ func handler_admin_post_course(ctx *web.Context, id string) string {
 		}
 	}
 
-
-	body, err_body := ioutil.ReadAll(ctx.Request.Body)
-
-	if err_body != nil {
-		error_body, _ := json.Marshal(Error{Error: ERROR_INVALID_FORMAT})
-		return string(error_body)
-	}
-
-	req := CourseEdit{}
-
-	err = json.Unmarshal(body, &req)
-
 	ctx_ := context.WithValue(context.Background(), "init_user", init_user.Id)
 
 	if id_int == 0 {
 		course_ = &course.Course{}
 	}
 
-	if _, ok:= ctx.Params["title"]; ok {
-		course_.Title = ctx.Params["title"]
+	ctx.Request.ParseMultipartForm(0)
+
+	if string(ctx.Request.FormValue("title")) != "" {
+		course_.Title = string(ctx.Request.FormValue("title"))
 	}
-	if _, ok:= ctx.Params["description"]; ok {
-		course_.Description = ctx.Params["description"]
+
+	if string(ctx.Request.FormValue("description")) != "" {
+		course_.Description = string(ctx.Request.FormValue("description"))
 	}
 
 	src, hdr, err := ctx.Request.FormFile("preview")
 	if err == nil {
 		defer src.Close()
 		dir_save_avatar := filepath.Join(course.DIR_PREVIEW, hdr.Filename)
+		extension := filepath.Ext(dir_save_avatar)
+			id := uuid.New()
+			dir_save_avatar = filepath.Join(course.DIR_PREVIEW, 
+				id.String() + extension)
+				
 		dst, err := os.Create(dir_save_avatar)
 		if err == nil {
 			defer dst.Close()
+			io.Copy(dst, src)
 			course_.Image = dir_save_avatar
 		}
 	}

@@ -3,6 +3,7 @@ package user_course_answer
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
 func (UserCourseAnswer) TableName() string {
@@ -15,6 +16,9 @@ func Init(db *gorm.DB) {
 	db.AutoMigrate(&UserCourseAnswer{})
 }
 
+const DIR_ANSWER = "./public/user/answer"
+
 func SetEnv() {
 	logrus.Info("Ответы пользователей")
+	os.MkdirAll(DIR_ANSWER, os.ModePerm)
 }

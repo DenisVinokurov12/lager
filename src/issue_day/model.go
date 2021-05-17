@@ -22,4 +22,6 @@ type IssueDay struct {
 	FullDescription string    `gorm:"type:text" json:"full_description"`
 	Sort 			int    		`json:"sort"`
 	IsCompleted 	bool    `gorm:"-" json:"is_completed"`
+	Question 		string    `json:"question"`
+	File 			string    `json:"file"`
 }

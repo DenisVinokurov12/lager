@@ -9,6 +9,7 @@ import (
 	"time"
 	"order"
 	"user_course"
+	"course_day"
 	"context"
 )
 
@@ -86,20 +87,26 @@ func handler_registration(ctx *web.Context) string {
 		Password : user.CompressPass(req.Password),
 		AddTs : time.Now(),
 		OrderId : req.OrderId,
+		Rule : req.Rule,
+		Gender : req.Gender,
 	}
 	user.Add(user_, ctx_)
 
 
 	if req.CourseId != 0 && user_course.GetById(req.CourseId).Id != 0 {
 
-		// Ищем первое задание у этого курса
+		// день который выполнил юзер
 
-		uc := &user_course.UserCourse{}
-		uc.UserId = user_.Id
-		uc.IssueDayId = 1
-		uc.IsCompleted = false
-		uc.StartTs = time.Now()
-		user_course.Add(uc, ctx_)
+		issues_days := course_day.GetByCourseIdByDay(req.CourseId, 1)
+
+		for i := 0; i < len(issues_days); i++ {
+			uc := &user_course.UserCourse{}
+			uc.UserId = user_.Id
+			uc.IssueDayId = issues_days[i].Id
+			uc.StartTs = time.Now()
+			user_course.Add(uc, ctx_)
+		}
+
 	}
 
 	return toJSON(user_)

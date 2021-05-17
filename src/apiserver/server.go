@@ -53,12 +53,53 @@ func New(c *ApiConfig) {
 	// Получение заданий по пользователю со статусом
 	// Получение заданий на определенном дне у курса
 	app.Get(`/api/issues/course/([0-9]*)/day/([0-9]*)/my`, handler_issue_day_by_course_by_day_user)
+	app.Get(`/api/user/([0-9]*)/course/([0-9]*)/knowbase`, 
+	handler_user_knowbase_by_course)
+	
+
+	// Получение цепочки сообщений от своего и до всех кто отвечал
+	app.Get(`/api/issues/([0-9]*)/user/([0-9]*)/comments`, 
+	handler_issue_day_all_comment_in_my_comments)
 	// Получение заданий на курсе
 	app.Get(`/api/issues/course/([0-9]*)/my`, handler_issue_day_by_course_user)
 	
 	app.Get(`/api/issues/course/([0-9]*)/day/([0-9]*)/user/([0-9]*)`, handler_issue_day_by_course_by_day_by_user)
 
 	app.Get(`/api/issues/course/([0-9]*)/user/([0-9]*)`, handler_issue_day_by_course_by_user)
+	
+	// Ответ пользователя на вопрпос
+	// Получение комментариев по задаче
+	app.Get(`/api/issues/([0-9]*)/answer`, handler_get_issue_answer)
+	app.Get(`/api/issues/([0-9]*)/answer/no_review`, handler_get_issue_answer_no_review)
+
+	// Получение комментариев от какого то пользователя
+	app.Get(`/api/issues/([0-9]*)/user/([0-9]*)/answer`, handler_get_issue_answer_by_user)
+	// answer_file
+	// answer
+	// 
+	app.Post(`/api/issues/([0-9]*)/answer`, handler_issue_answer)
+	app.Put(`/api/issues/([0-9]*)/answer/([0-9]*)`, handler_issue_answer_put)
+
+
+
+
+
+
+	// Получение всех комментариев по этой задаче
+	app.Get(`/api/issues/([0-9]*)/comments`, handler_issue_comments)
+	app.Get(`/api/user/([0-9]*)/get_courses`, handler_get_my_courses)
+
+	// Получение всех комментариев по этой задаче по определенному пользователю
+	// app.Get(`/api/issues/([0-9]*)/user/([0-9]*)/comments`, handler_issue_comments_by_user)
+
+	// Добавить комментарий
+	app.Post(`/api/issues/([0-9]*)/comment`, handler_issue_comment_add)
+
+	// Ответить на комментарий
+	app.Put(`/api/comment/([0-9]*)`, handler_issue_comment_put)
+
+	// Удалить комментарий
+	app.Delete(`/api/comment/([0-9]*)`, handler_issue_comment_delete)
 
 	app.Get(`/api/issues/day/([0-9]*)/course/([0-9]*)`, handler_issue_day_by_course_day)
 	app.Get(`/api/issues/([0-9]*)`, handler_get_issue_day)
@@ -70,10 +111,16 @@ func New(c *ApiConfig) {
 
 	app.Post(`/api/user/update`, handler_user_update)
 	app.Post(`/api/order/success`, handler_order_success)
+	
+	app.Get(`/api/ranks`, handler_get_ranks)
 
-	// app.Get(`/api/admin/user_course/([0-9]*)/completed`, handler_complete_user_course)
-	// app.Post(`/api/admin/user_course/([0-9]*)`, handler_set_user_course)
-	// app.Put(`/api/admin/user_course/([0-9]*)`, handler_set_user_course)
+	app.Get(`/api/admin/user_course/([0-9]*)/completed`, handler_complete_user_course)
+	app.Get(`/api/admin/issue/([0-9]*)/user/([0-9]*)/completed`, handler_user_issue_completed)
+	app.Get(`/api/admin/course/([0-9]*)/user/([0-9]*)/registered`, 
+	handler_set_user_to_course)
+
+	app.Post(`/api/admin/user_course/([0-9]*)`, handler_set_user_course)
+	app.Put(`/api/admin/user_course/([0-9]*)`, handler_set_user_course)
 
 	
 	app.Match("DELETE", `(.*)`, handler_option)

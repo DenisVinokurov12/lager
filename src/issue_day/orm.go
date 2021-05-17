@@ -10,11 +10,42 @@ func GetByDayId(day_id int) []*IssueDay {
 	return records
 }
 
+
 func GetByCourseIdDayId(course_id, day int) []*IssueDay {
 	records := []*IssueDay{}
 	DB.Where("course_id = ?" , course_id).
 	Where("day_id = ?" , day).
 	Find(&records)
+	return records
+}
+
+func GetKnowbaseByUserByCourseId(user_id , course_id int) []*IssueDay {
+	record := []*IssueDay{}
+	DB.Joins("LEFT JOIN user_course on user_course.issue_day_id = issue_day.id").
+		Where("user_course.user_id = ?", user_id).
+		Where("issue_day.course_id = ?", course_id).
+		Find(&record)
+	return record
+}
+
+func GetByCourseIdDayIdCompleted(course_id, day, user_id int) []*IssueDay {
+	records := []*IssueDay{}
+	DB.Joins("LEFT JOIN user_course on user_course.issue_day_id = issue_day.id").
+		Where("issue_day.course_id = ?" , course_id).
+		Where("issue_day.day_id = ?" , day).
+		Where("user_course.user_id = ?" , user_id).
+		Where("user_course.is_completed = ?" , true).
+		Find(&records)
+	return records
+}
+func GetByCourseIdDayIdNotCompleted(course_id, day, user_id int) []*IssueDay {
+	records := []*IssueDay{}
+	DB.Joins("LEFT JOIN user_course on user_course.issue_day_id = issue_day.id").
+		Where("issue_day.course_id = ?" , course_id).
+		Where("issue_day.day_id = ?" , day).
+		Where("user_course.user_id = ?" , user_id).
+		Where("user_course.is_completed = ?" , false).
+		Find(&records)
 	return records
 }
 

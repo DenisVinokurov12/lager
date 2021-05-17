@@ -76,9 +76,12 @@ func handler_admin_get_course_days(ctx *web.Context, course_id string) string {
 	course_days_res := []*course_day.CourseDay{}
 	course_days := course_day.GetByCourseId(course_id_int)
 	for i := 0; i < len(course_days); i++ {
-		if !init_user.IsAccessCourseDay(course_days[i]){
-			continue
-		}
+
+		
+		
+		// if !init_user.IsAccessCourseDay(course_days[i]){
+		// 	continue
+		// }
 		course_days_res = append(course_days_res, course_days[i])
 	}
 
@@ -105,8 +108,7 @@ func handler_admin_post_course_day(ctx *web.Context, course_day_id string) strin
 
 	course_day_ := course_day.GetById(course_id_day_int)
 	if course_day_.Id == 0 {
-		ctx.ResponseWriter.WriteHeader(404)
-		return `{"error" : "not found"}`
+		course_day_ = &course_day.CourseDay{}
 	}
 
 	body, err_body := ioutil.ReadAll(ctx.Request.Body)

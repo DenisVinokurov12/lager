@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/google/uuid"
 	"io/ioutil"
+	"user_comment"
 	"time"
 	"user"
 )
@@ -89,6 +90,7 @@ func handler_get_info_by_token(ctx *web.Context) string {
 	sessions.Add(out_str, user_.Id, cache.NoExpiration)
 
 	return toJSON(struct{
+		Id 			int `json:"id"`
 		Token 		string `json:"token"`
 		FirstName 	string `json:"first_name"`
 		LastName 	string `json:"last_name"`
@@ -97,7 +99,10 @@ func handler_get_info_by_token(ctx *web.Context) string {
 		Phone 		string `json:"phone"`
 		Avatar 		string `json:"avatar"`
 		Rule 		int 	`json:"rule"`
+		Gender 		string 	`json:"gender"`
+		Nagara 		[]string 	`json:"nagrada"`
 	}{
+		Id : user_.Id,
 		Token:    out_str,
 		FirstName: user_.FirstName,
 		LastName: user_.LastName,
@@ -106,6 +111,8 @@ func handler_get_info_by_token(ctx *web.Context) string {
 		Phone: user_.Phone,
 		Avatar: user_.Avatar,
 		Rule: user_.Rule,
+		Gender : user_.Gender,
+		Nagara : user_comment.GetNagradaByUserId(user_.Id),
 	})
 
 }

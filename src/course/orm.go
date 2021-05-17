@@ -11,6 +11,23 @@ func All() []*Course {
 	return records
 }
 
+
+/*
+SELECT `course`.* FROM 
+`course` issue_day on issue_day.course_id = course.id user_course on 
+user_course.issue_day_id = issue_day.id  GROUP BY user_id
+*/
+func GetByUserId(user_id int) []*Course {
+	record := []*Course{}
+	DB.Joins("LEFT JOIN issue_day on issue_day.course_id = course.id").
+		Joins("LEFT JOIN user_course on user_course.issue_day_id = issue_day.id").
+		Group("user_id, course.id").
+		Where("user_course.user_id is not null").
+		Where("user_course.user_id = ?", user_id).
+		Find(&record)
+	return record
+}
+
 func Delete(id int, ctx context.Context) *Course {
 	DB.Where("id = ?", id).Delete(Course{})
 
